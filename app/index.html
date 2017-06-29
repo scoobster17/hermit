@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>Hermit</title>
+    <style type="text/css">
+        .something {
+            height:300px;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -12,6 +17,17 @@
         <main>
             <h1>Welcome to Hermit</h1>
             <p>This is the hermit app.</p>
+            <ul>
+                <li>
+                    <webview
+                        id="something"
+                        class="something"
+                        src="https://twitter.com/"
+                    >
+                        <div class="spinner" hidden></div>
+                    </webview>
+                </li>
+            </ul>
         </main>
         <footer>
             &copy; Phil Gibbins
