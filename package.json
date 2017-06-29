@@ -1,0 +1,30 @@
+{
+  "name": "hermit",
+  "version": "1.0.0",
+  "description": "Hermit, a shell for all of your other apps so you can stay comfy in one place",
+  "main": "electron/index.js",
+  "scripts": {
+    "start": "node_modules/.bin/electron ./electron/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scoobster17/hermit.git"
+  },
+  "keywords": [
+    "hermit",
+    "shell",
+    "windows",
+    "web",
+    "multiple"
+  ],
+  "author": "Phil Gibbins <scoobster17@hotmail.co.uk> (http://www.philgibbins.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scoobster17/hermit/issues"
+  },
+  "homepage": "https://github.com/scoobster17/hermit#readme",
+  "dependencies": {
+    "electron": "^1.6.11"
+  }
+}
