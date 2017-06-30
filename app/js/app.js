@@ -11,6 +11,16 @@ const template = [
     '</webview>'
 ].join('');
 
+const buttonTemplate = [
+    '<button ',
+        'data-url="{{ url }}" ',
+        'data-classes="tab" ',
+        'data-site="{{ site }}" ',
+    '>',
+        '{{ name }}',
+    '</button>'
+].join('');
+
 /**
  * Create tab content from the data supplied, to append to the DOM
  * @param  {String} id      ID to assign to the tab
@@ -22,25 +32,58 @@ const createTabContent = function (id, classes, src) {
 
     let i = 0;
 
-    tabContent = template.replace(/\{\{ [a-zA-Z]+ \}\}/g, (match) => {
+    tabContent = template.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
         return '' + arguments[i++];
     });
 
     return tabContent;
 };
 
+const tabContentContainer = document.getElementById('tab-content-container');
+var preconfiguredTabs = document.getElementById('pre-configured-tabs');
+
 const getPreconfiguredTabs = () => {
     fetch('/pre-configured-tabs')
-    .then(res => console.log)
+    .then(res => {
+        if (res.ok) return res;
+        throw new Error('There was an error');
+    })
+    .then(res => res.json())
+    .then(res => {
+        // tabContentContainer.innerHTML += createTabContent(res.site.toLowerCase(),'tab',res.url);
+        var details = ['url', 'site', 'name'];
+        var i= 0;
+        var buttonContent = buttonTemplate.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
+            return '' + res[details[i++]];
+        });
+        preconfiguredTabs.innerHTML += buttonContent;
+        return res;
+    })
+    .then(res => {
+        var buttons = preconfiguredTabs.getElementsByTagName('button');
+        for (button of buttons) {
+            button.addEventListener('click', function(event) {
+                for (let attr in event.target.dataset) {
+                    const formInput = document.getElementById(attr);
+                    if (formInput) {
+                        formInput.value = event.target.dataset[attr];
+                    }
+                }
+                const formInput = document.getElementById('name');
+                if (formInput) {
+                    formInput.value = event.target.innerHTML;
+                }
+            });
+        }
+    });
 };
 
 const init = () => {
     getPreconfiguredTabs();
-    const tabContentContainer = document.getElementById('tab-content-container');
     const newTabForm = document.getElementById('new-tab-form');
     newTabForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        tabContentContainer.innerHTML += createTabContent('facebook','tab','https://www.facebook.com/');;
+        tabContentContainer.innerHTML += createTabContent('facebook','tab','https://www.facebook.com/');
         return false;
     });
 }

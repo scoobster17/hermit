@@ -14,7 +14,7 @@ expressApp.get('/',function(req,res){
 });
 
 expressApp.get('/pre-configured-tabs',function(req,res){
-  res.sendFile(path.join(__dirname+'/../data/facebook/config.json'));
+  res.sendFile(path.join(__dirname+'/../data/twitter/config.json'));
 });
 
 // set up app to listen on port
