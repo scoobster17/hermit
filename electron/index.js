@@ -5,7 +5,7 @@ const url = require('url');
 
 let appWindow;
 
-function createWindow() {
+function createBrowserWindow() {
 
     appWindow = new BrowserWindow({
         height: 600,
@@ -24,7 +24,7 @@ function createWindow() {
 
 }
 
-app.on('ready', createWindow);
+app.on('ready', createBrowserWindow);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -34,6 +34,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
     if (appWindow === null) {
-        createWindow();
+        createBrowserWindow();
     }
 });

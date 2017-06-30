@@ -8,26 +8,50 @@
 <body>
     <div>
         <header>
-            Hermit
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#config">
+                            Hermit
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </header>
         <main>
-            <h1>Welcome to Hermit</h1>
-            <p>This is the hermit app.</p>
-            <ul>
-                <li>
-                    <webview
-                        id="something"
-                        class="something"
-                        src="https://twitter.com/"
-                    >
-                        <div class="spinner" hidden></div>
-                    </webview>
-                </li>
-            </ul>
+            <div id="tab-content-container">
+                <article>
+                    <section>
+                        <h1>Welcome to Hermit</h1>
+                        <p>This is the hermit app.</p>
+                    </section>
+                    <section>
+                        <h2>Add a new tab</h2>
+                        <form id="new-tab-form">
+                            <fieldset>
+                                <h3>Tab details</h3>
+                                <label for="name">Name</label>
+                                <input type="text" name="name" id="name" placeholder="Twitter" />
+                                <label for="site">Site</label>
+                                <input type="text" name="site" id="site" placeholder="Twitter" />
+                                <label for="url">URL</label>
+                                <input type="text" name="url" id="url" placeholder="www.twitter.com" />
+                            </fieldset>
+                            <fieldset>
+                                <h3>Configuration</h3>
+                                <label for="show-name">Show name</label>
+                                <input type="checkbox" name="show-name" id="show-name" checked="checked" />
+                            </fieldset>
+                            <input type="submit" value="Add new tab" />
+                        </form>
+                    </section>
+                </article>
+            </div>
         </main>
         <footer>
             &copy; Phil Gibbins
         </footer>
     </div>
+    <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
