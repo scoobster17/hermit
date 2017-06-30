@@ -29,9 +29,15 @@ const createTabContent = function (id, classes, src) {
     return tabContent;
 };
 
+const getPreconfiguredTabs = () => {
+    fetch('/pre-configured-tabs')
+    .then(res => console.log)
+};
+
 const init = () => {
-    var tabContentContainer = document.getElementById('tab-content-container');
-    var newTabForm = document.getElementById('new-tab-form');
+    getPreconfiguredTabs();
+    const tabContentContainer = document.getElementById('tab-content-container');
+    const newTabForm = document.getElementById('new-tab-form');
     newTabForm.addEventListener('submit', (event) => {
         event.preventDefault();
         tabContentContainer.innerHTML += createTabContent('facebook','tab','https://www.facebook.com/');;

@@ -1,5 +1,7 @@
 // dependencies
 const { app, BrowserWindow } = require('electron');
+const server = require('../server/index.js');
+
 const path = require('path');
 const url = require('url');
 
@@ -12,11 +14,7 @@ function createBrowserWindow() {
         width: 800
     });
 
-    appWindow.loadURL(url.format({
-        pathname: path.join(__dirname, '..', 'app', 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    appWindow.loadURL('http://localhost:6378');
 
     appWindow.on('closed', () => {
         appWindow = null;
