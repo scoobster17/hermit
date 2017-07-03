@@ -2,7 +2,9 @@
 
 @import '../../../node_modules/reset-css/_reset';
 
-$primaryBackgroundColour: #f04d02;
+$primaryColour: #f04d02;
+$primaryBackgroundColour: $primaryColour;
+$primaryFontSize: 1.6rem;
 
 .hermit-html {
     font-size:62.5%;
@@ -11,6 +13,7 @@ $primaryBackgroundColour: #f04d02;
 .hermit-nav {
     background-color: $primaryBackgroundColour;
     overflow:hidden;
+    padding:0 2px;
     li {
         float:left;
     }
@@ -20,8 +23,8 @@ $primaryBackgroundColour: #f04d02;
         border-radius: 6px 6px 0 0;
         color: inherit;
         display:block;
-        font-size:1.6rem;
-        margin:2px 1px 0;
+        font-size:$primaryFontSize;
+        margin:3px 2px 0 1px;
         opacity: .8;
         padding: 10px 20px 8px;
         text-decoration: none;
@@ -36,12 +39,10 @@ $primaryBackgroundColour: #f04d02;
     }
 }
 .hermit-tab {
-    padding: 20px;
-
     h1 {
         font-weight:bold;
         font-size:2.4rem;
-        margin:0 auto 1rem;
+        margin:40px auto 1rem;
         max-width:80rem;
     }
     h2 {
@@ -57,10 +58,13 @@ $primaryBackgroundColour: #f04d02;
         max-width:80rem;
     }
     p {
-        font-size:1.6rem;
+        font-size:$primaryFontSize;
         line-height:1.5;
         margin: 0 auto 10px;
         max-width:80rem;
+    }
+    strong {
+        font-weight: bold;
     }
 
     section {
@@ -72,17 +76,109 @@ $primaryBackgroundColour: #f04d02;
         margin-right:auto;
         max-width:80rem;
     }
+    fieldset {
+        margin: 0 0 20px;
+    }
+    .field {
+        overflow:hidden;
+        padding:2rem;
+        + .field {
+            border-top: 1px solid $primaryColour;
+        }
+    }
+    .checkboxField {
+        padding-left:40px;
+        position: relative;
+        input[type="checkbox"] {
+            left:0;
+            position: absolute;
+            top:21px;
+        }
+    }
+    label {
+        font-size: $primaryFontSize;
+        font-weight:bold;
+        line-height:1.5;
+        margin: 0 0 1rem;
+    }
+    input {
+        font-size: $primaryFontSize;
+    }
+    .main-details {
+        label {
+            float:left;
+            margin-top: 0.5rem;
+            width:45%;
+            + p {
+                float:right;
+                margin:0;
+                width:50%;
+            }
+        }
+        input {
+            float:left;
+            width:45%;
+        }
+    }
+
+    button {
+        cursor: pointer;
+    }
+    .button {
+        cursor: pointer;
+        background-color: $primaryBackgroundColour;
+        border:0 solid transparent;
+        border-radius: 4px;
+        color:#fff;
+        font-size: $primaryFontSize;
+        padding: 20px 80px;
+    }
+
+    .actions {
+        text-align: center;
+    }
+
     .pre-configured-tabs {
+        background-color: $primaryBackgroundColour;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        box-shadow: inset 3px 3px 3px rgba(0, 0, 0, .2);
         margin-left:auto;
         margin-right:auto;
         max-width:80rem;
+        overflow: hidden;
+        li {
+            float:left;
+            margin: 1rem 1%;
+            width: 22%;
+        }
+        button {
+            background: #fff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+            box-sizing: border-box;
+            display:block;
+            font-size: $primaryFontSize;
+            padding: 80px 10px 10px;
+            position:relative;
+            width:100%;
+            img {
+                left: 50%;
+                margin-left:-30px;
+                min-height:60px;
+                position: absolute;
+                top:10px;
+                width:60px;
+            }
+        }
     }
     footer {
         background-color: $primaryBackgroundColour;
         color: #fff;
+        padding: 40px 0;
         section {
-            margin-left:auto;
-            margin-right:auto;
+            margin:0 auto;
             max-width:80rem;
         }
     }

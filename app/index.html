@@ -29,33 +29,49 @@
                         <h2>Add a new tab</h2>
                         <p>Here you can specify any* site which will be added as a tab in your app.</p>
                         <form id="new-tab-form">
-                            <fieldset>
+                            <fieldset class="main-details">
                                 <h3>Tab details</h3>
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" placeholder="Twitter" />
-                                <label for="site">Site</label>
-                                <input type="text" name="site" id="site" placeholder="Twitter" />
-                                <label for="url">URL</label>
-                                <input type="text" name="url" id="url" placeholder="www.twitter.com" />
+                                <div class="field">
+                                    <label for="name"><span class="visually-hidden">Tab </span>Name</label>
+                                    <p>This shows in the tab at the top of the screen. For example, look at this tab, next to the Hermit icon it says 'Hermit'. <strong>Required if a logo is not present.</strong></p>
+                                    <input type="text" name="name" id="name" placeholder="Twitter" />
+                                </div>
+                                <div class="field">
+                                    <label for="site">Site</label>
+                                    <p>This let&apos;s us know what service you are trying to access. This is to help the app set the site up correctly, such as to get an icon. <strong>This is required</strong>.</p>
+                                    <input type="text" name="site" id="site" placeholder="Twitter" required="true" />
+                                </div>
+                                <div class="field">
+                                    <label for="url">URL</label>
+                                    <p>Here please enter the site URL to be opened. You may be asked to log in if the service requires it. Hermit saves no login information. <strong>This is required.</strong></p>
+                                    <input type="text" name="url" id="url" placeholder="www.twitter.com" required="true" />
+                                </div>
                             </fieldset>
                             <fieldset>
                                 <h3>Configuration</h3>
-                                <label for="show-name">Show name</label>
-                                <input type="checkbox" name="show-name" id="show-name" checked="checked" />
+                                <div class="field checkboxField">
+                                    <label for="show-name">Show name</label>
+                                    <p>If you have specified a name in the above box, you can toggle whether it is shown or not here. Doing this saves the previous value so you don't need to remember what you had there before if you keep changing your mind!</p>
+                                    <input type="checkbox" name="show-name" id="show-name" checked="checked" />
+                                </div>
                             </fieldset>
-                            <input type="submit" value="Add new tab" />
+                            <ul class="actions">
+                                <li>
+                                    <input type="submit" class="button" value="Add new tab" />
+                                </li>
+                            </ul>
                         </form>
                     </section>
                     <section>
                         <h2>Add a pre-configured tab</h2>
-                        <p>We have a list of supported apps in the list below for you to quickly configure without having to look up the URL.</p>
+                        <p>We have a list of supported apps in the list below for you to quickly configure without having to look up the URL. Simply click on the one you want to use and the form above will be pre-filled ready for you to confirm.</p>
                         <!-- <p>We also welcome suggestions, <a>here you can contribute your own sites</a>.</p> -->
                         <ul id="pre-configured-tabs" class="pre-configured-tabs"></ul>
                     </section>
                     <footer>
                         <section>
-                            &copy; Phil Gibbins
-                            * Hermit has no responsibility for the sites you wish to add. Anything that may be added that may be illegal in the country of use will be entirely at the risk of the user adding the site. Hermit does not condone the use of any such sites, and does not take any responsibility for the user wishing to do so. Hermit does also not provide any masking / privacy in terms of the sites visited, this will be equally accessible by network administrators etc as per a normal browser.
+                            <p>&copy; Phil Gibbins</p>
+                            <small>* Hermit has no responsibility for the sites you wish to add. Anything that may be added that may be illegal in the country of use will be entirely at the risk of the user adding the site. Hermit does not condone the use of any such sites, and does not take any responsibility for the user wishing to do so. Hermit does also not provide any masking / privacy in terms of the sites visited, this will be equally accessible by network administrators etc as per a normal browser.</small>
                         </section>
                     </footer>
                 </article>

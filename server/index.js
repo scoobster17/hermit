@@ -11,20 +11,26 @@ var expressApp = express();
 expressApp.use(express.static(__dirname + '/../app'));
 
 // routing
-expressApp.get('/',function(req,res){
+expressApp.get('/', function(req,res) {
   res.sendFile(path.join(__dirname+'/../app/index.html'));
 });
 
-expressApp.get('/pre-configured-tabs',function(req,res){
+expressApp.get('/pre-configured-tabs', function(req,res) {
 
-    recursive(__dirname + '/../data', function(err, files) {
+    recursive(__dirname + '/../data', ['**/*.png', '**/*.svg'], function(err, files) {
         readMultipleFiles(files, 'utf-8', function(err, results) {
             if (err) throw err;
-            res.status(200).send(results.map(function(fileContents) {
+            var x = results.map(function(fileContents) {
                 return JSON.parse(fileContents);
-            }));
+            });
+            res.status(200).send(x);
         });
     })
+});
+
+expressApp.get('/img/service/*', function(req, res) {
+    var file = req.url.replace('/img/service', __dirname + '/../data');
+    res.status(200).sendFile(path.resolve(file));
 });
 
 // set up app to listen on port

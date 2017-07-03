@@ -17,6 +17,7 @@ const buttonTemplate = [
         'data-site="{{ site }}" ',
     '>',
         '{{ name }}',
+        '<img src="img/service/{{ name | lowercase }}/{{ logo }}" alt="" />',
     '</button>'
 ].join('');
 
@@ -31,7 +32,7 @@ const createTabContent = function (id, classes, src) {
 
     let i = 0;
 
-    tabContent = template.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
+    tabContent = template.replace(/\{\{ ?([a-zA-Z]+) ?\}\}/g, () => {
         return '' + arguments[i++];
     });
 
@@ -40,11 +41,33 @@ const createTabContent = function (id, classes, src) {
 
 const createButton = (config) => {
 
-        const details = ['url', 'site', 'name'];
         let i = 0;
 
-        const buttonContent = buttonTemplate.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
-            return '' + config[details[i++]];
+        const buttonContent = buttonTemplate.replace(/\{\{ ?([a-zA-Z]+)( ?\| ?([a-zA-Z]+))? ?\}\}/g, function(){
+
+            // get the filter and the key
+            const key = arguments[1];
+            const filter = arguments[3];
+
+            // if there is a filter, we need to process the key's value
+            if (filter !== undefined) {
+
+                switch (filter) {
+
+                    case 'lowercase':
+                        return '' + config[key].toLowerCase();
+                        break;
+
+                    default:
+                        return '' + config[key];
+
+                }
+
+            // otherwise return the corresponding config value
+            } else {
+                return '' + config[key];
+            }
+
         });
 
         return buttonContent;
@@ -62,7 +85,7 @@ const getPreconfiguredTabs = () => {
     .then(res => res.json())
     .then(res => {
         res.forEach((siteConfig) => {
-            preconfiguredTabs.innerHTML += createButton(siteConfig);
+            preconfiguredTabs.innerHTML += '<li>' + createButton(siteConfig) + '</li>';
         });
         return res;
     })
