@@ -1,6 +1,8 @@
 // dependencies
 var path = require("path");
 var express = require("express");
+var recursive = require('recursive-readdir');
+var readMultipleFiles = require('read-multiple-files');
 
 // set up express app
 var expressApp = express();
@@ -14,7 +16,15 @@ expressApp.get('/',function(req,res){
 });
 
 expressApp.get('/pre-configured-tabs',function(req,res){
-  res.sendFile(path.join(__dirname+'/../data/twitter/config.json'));
+
+    recursive(__dirname + '/../data', function(err, files) {
+        readMultipleFiles(files, 'utf-8', function(err, results) {
+            if (err) throw err;
+            res.status(200).send(results.map(function(fileContents) {
+                return JSON.parse(fileContents);
+            }));
+        });
+    })
 });
 
 // set up app to listen on port

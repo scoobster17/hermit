@@ -39,6 +39,18 @@ const createTabContent = function (id, classes, src) {
     return tabContent;
 };
 
+const createButton = (config) => {
+
+        const details = ['url', 'site', 'name'];
+        let i = 0;
+
+        const buttonContent = buttonTemplate.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
+            return '' + config[details[i++]];
+        });
+
+        return buttonContent;
+};
+
 const tabContentContainer = document.getElementById('tab-content-container');
 var preconfiguredTabs = document.getElementById('pre-configured-tabs');
 
@@ -50,13 +62,9 @@ const getPreconfiguredTabs = () => {
     })
     .then(res => res.json())
     .then(res => {
-        // tabContentContainer.innerHTML += createTabContent(res.site.toLowerCase(),'tab',res.url);
-        var details = ['url', 'site', 'name'];
-        var i= 0;
-        var buttonContent = buttonTemplate.replace(/\{\{ [a-zA-Z]+ \}\}/g, () => {
-            return '' + res[details[i++]];
+        res.forEach((siteConfig) => {
+            preconfiguredTabs.innerHTML += createButton(siteConfig);
         });
-        preconfiguredTabs.innerHTML += buttonContent;
         return res;
     })
     .then(res => {
