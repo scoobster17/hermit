@@ -4,8 +4,8 @@
  */
 const template = [
     '<webview ',
-        'id="{{ windowId }}" ',
-        'src="{{ windowSrc }}" ',
+        'id="{{ id }}" ',
+        'src="{{ url }}" ',
     '>',
     '</webview>'
 ].join('');
@@ -27,12 +27,12 @@ const buttonTemplate = [
  * @param  {String} src     Src of the tab
  * @return {String}         The returned HTML to be added to the DOM
  */
-const createTabContent = function (id, classes, src) {
+const createTabContent = function (config) {
 
     let i = 0;
 
-    tabContent = template.replace(/\{\{ ?([a-zA-Z]+) ?\}\}/g, () => {
-        return '' + arguments[i++];
+    tabContent = template.replace(/\{\{ ?([a-zA-Z]+) ?\}\}/g, function() {
+        return '' + config[arguments[1]];
     });
 
     return tabContent;
@@ -110,12 +110,60 @@ const getPreconfiguredTabs = () => {
     });
 };
 
+const tabList = document.getElementById('hermit-nav');
+
+const bindTabTriggers = () => {
+
+    const tabs = tabList.querySelectorAll('a');
+    const tabPanels = tabContentContainer.querySelectorAll('.tab');
+
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            tabs.forEach((tabChangingStateOf) => {
+                tabChangingStateOf.removeAttribute('aria-selected');
+            });
+            event.target.setAttribute('aria-selected', 'true');
+
+            const targetTab = document.getElementById(
+                event.target.getAttribute('href').slice(1)
+            );
+            tabPanels.forEach((tabPanel) => {
+                tabPanel.setAttribute('aria-hidden', 'true');
+            });
+            targetTab.removeAttribute('aria-hidden');
+        });
+    });
+};
+
 const init = () => {
     getPreconfiguredTabs();
     const newTabForm = document.getElementById('new-tab-form');
     newTabForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        tabContentContainer.innerHTML += createTabContent('facebook','tab','https://www.facebook.com/');
+        const existingTabPanels = tabContentContainer.querySelectorAll('.tab');
+        existingTabPanels.forEach((tab) => {
+            tab.setAttribute('aria-hidden', 'true');
+        });
+        const tabs = tabList.querySelectorAll('a');
+
+        tabs.forEach((tab) => {
+            tab.removeAttribute('aria-selected');
+        });
+
+        tabContentContainer.innerHTML += '<div id="facebook" class="tab">' + createTabContent({
+            id: 'facebook',
+            url: 'https://www.facebook.com/'
+        }) + '</div>';
+        tabList.innerHTML += [
+            '<li>',
+                '<a href="#facebook" id="tab-config" role="tab" aria-controls="facebook" aria-selected="true">',
+                    'Facebook',
+                '</a>',
+            '</li>'
+        ].join('');
+        bindTabTriggers();
         return false;
     });
 }

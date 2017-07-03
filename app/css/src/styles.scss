@@ -9,6 +9,16 @@ $primaryFontSize: 1.6rem;
 .hermit-html {
     font-size:62.5%;
     font-family: arial, sans-serif;
+    height:100%;
+    > body {
+        height: 100%;
+        > header {
+            height: 37px; // ensure height explicitly set for below
+        }
+        > main {
+            height:calc(100% - 37px); // make browser full height apart from Hermit header
+        }
+    }
 }
 .hermit-nav {
     background-color: $primaryBackgroundColour;
@@ -34,6 +44,16 @@ $primaryFontSize: 1.6rem;
     }
 }
 .hermit-tab-container {
+    height:100%;
+    article {
+        height: 100%;
+    }
+    > div {
+        height: 100%;
+        > * {
+            height:100%;
+        }
+    }
     [aria-hidden="true"] {
         display:none;
     }

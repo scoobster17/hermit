@@ -6,78 +6,81 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-    <div>
-        <header>
-            <nav>
-                <ul class="hermit-nav" role="tablist">
-                    <li>
-                        <a href="#hermit" id="tab-config" role="tab" aria-controls="hermit" aria-selected="true">
-                            Hermit
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <div id="tab-content-container" class="hermit-tab-container">
-                <article id="hermit" class="hermit-tab" role="tabpanel" aria-labelledby="tab-config">
+    <header>
+        <nav>
+            <ul id="hermit-nav" class="hermit-nav" role="tablist">
+                <li>
+                    <a href="#hermit" id="tab-config" role="tab" aria-controls="hermit" aria-selected="true">
+                        Hermit
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="tab-content-container" class="hermit-tab-container">
+            <article id="hermit" class="tab hermit-tab" role="tabpanel" aria-labelledby="tab-config">
+                <section>
+                    <h1>Welcome to Hermit</h1>
+                    <p>This is the hermit app. In a great juxtaposition of the way the hermit crab picks many empty seashells to wrap around itself, this app is a 'shell' to all of your many web apps that you don't want clogging up your browser tabs.</p>
+                </section>
+                <section>
+                    <h2>Your tabs</h2>
+                    <p>You currently have no tabs. Add some below to get started!</p>
+                    <ul class="user-tabs"></ul>
+                </section>
+                <section id="add-new-site">
+                    <h2>Add a new tab</h2>
+                    <p>Here you can specify any* site which will be added as a tab in your app.</p>
+                    <form id="new-tab-form">
+                        <fieldset class="main-details">
+                            <h3>Tab details</h3>
+                            <div class="field">
+                                <label for="name"><span class="visually-hidden">Tab </span>Name</label>
+                                <p>This shows in the tab at the top of the screen. For example, look at this tab, next to the Hermit icon it says 'Hermit'. <strong>Required if a logo is not present.</strong></p>
+                                <input type="text" name="name" id="name" placeholder="e.g. Twitter" />
+                            </div>
+                            <div class="field">
+                                <label for="site">Site</label>
+                                <p>This let&apos;s us know what service you are trying to access. This is to help the app set the site up correctly, such as to get an icon. <strong>This is required</strong>.</p>
+                                <input type="text" name="site" id="site" placeholder="e.g. Twitter" required="true" />
+                            </div>
+                            <div class="field">
+                                <label for="url">URL</label>
+                                <p>Here please enter the site URL to be opened. You may be asked to log in if the service requires it. Hermit saves no login information. <strong>This is required.</strong></p>
+                                <input type="text" name="url" id="url" placeholder="e.g. https://www.twitter.com/" required="true" />
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <h3>Configuration</h3>
+                            <div class="field checkboxField">
+                                <label for="show-name">Show name</label>
+                                <p>If you have specified a name in the above box, you can toggle whether it is shown or not here. Doing this saves the previous value so you don't need to remember what you had there before if you keep changing your mind!</p>
+                                <input type="checkbox" name="show-name" id="show-name" checked="checked" />
+                            </div>
+                        </fieldset>
+                        <ul class="actions">
+                            <li>
+                                <input type="submit" class="button" value="Add and go to new tab" />
+                            </li>
+                        </ul>
+                    </form>
+                </section>
+                <section>
+                    <h2>Add a pre-configured tab</h2>
+                    <p>We have a list of supported apps in the list below for you to quickly configure without having to look up the URL. Simply click on the one you want to use and the form above will be pre-filled ready for you to confirm.</p>
+                    <!-- <p>We also welcome suggestions, <a>here you can contribute your own sites</a>.</p> -->
+                    <ul id="pre-configured-tabs" class="pre-configured-tabs"></ul>
+                </section>
+                <footer>
                     <section>
-                        <h1>Welcome to Hermit</h1>
-                        <p>This is the hermit app. In a great juxtaposition of the way the hermit crab picks many empty seashells to wrap around itself, this app is a 'shell' to all of your many web apps that you don't want clogging up your browser tabs.</p>
+                        <p>&copy; Phil Gibbins</p>
+                        <small>* Hermit has no responsibility for the sites you wish to add. Anything that may be added that may be illegal in the country of use will be entirely at the risk of the user adding the site. Hermit does not condone the use of any such sites, and does not take any responsibility for the user wishing to do so. Hermit does also not provide any masking / privacy in terms of the sites visited, this will be equally accessible by network administrators etc as per a normal browser.</small>
                     </section>
-                    <section id="add-new-site">
-                        <h2>Add a new tab</h2>
-                        <p>Here you can specify any* site which will be added as a tab in your app.</p>
-                        <form id="new-tab-form">
-                            <fieldset class="main-details">
-                                <h3>Tab details</h3>
-                                <div class="field">
-                                    <label for="name"><span class="visually-hidden">Tab </span>Name</label>
-                                    <p>This shows in the tab at the top of the screen. For example, look at this tab, next to the Hermit icon it says 'Hermit'. <strong>Required if a logo is not present.</strong></p>
-                                    <input type="text" name="name" id="name" placeholder="e.g. Twitter" />
-                                </div>
-                                <div class="field">
-                                    <label for="site">Site</label>
-                                    <p>This let&apos;s us know what service you are trying to access. This is to help the app set the site up correctly, such as to get an icon. <strong>This is required</strong>.</p>
-                                    <input type="text" name="site" id="site" placeholder="e.g. Twitter" required="true" />
-                                </div>
-                                <div class="field">
-                                    <label for="url">URL</label>
-                                    <p>Here please enter the site URL to be opened. You may be asked to log in if the service requires it. Hermit saves no login information. <strong>This is required.</strong></p>
-                                    <input type="text" name="url" id="url" placeholder="e.g. https://www.twitter.com/" required="true" />
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <h3>Configuration</h3>
-                                <div class="field checkboxField">
-                                    <label for="show-name">Show name</label>
-                                    <p>If you have specified a name in the above box, you can toggle whether it is shown or not here. Doing this saves the previous value so you don't need to remember what you had there before if you keep changing your mind!</p>
-                                    <input type="checkbox" name="show-name" id="show-name" checked="checked" />
-                                </div>
-                            </fieldset>
-                            <ul class="actions">
-                                <li>
-                                    <input type="submit" class="button" value="Add new tab" />
-                                </li>
-                            </ul>
-                        </form>
-                    </section>
-                    <section>
-                        <h2>Add a pre-configured tab</h2>
-                        <p>We have a list of supported apps in the list below for you to quickly configure without having to look up the URL. Simply click on the one you want to use and the form above will be pre-filled ready for you to confirm.</p>
-                        <!-- <p>We also welcome suggestions, <a>here you can contribute your own sites</a>.</p> -->
-                        <ul id="pre-configured-tabs" class="pre-configured-tabs"></ul>
-                    </section>
-                    <footer>
-                        <section>
-                            <p>&copy; Phil Gibbins</p>
-                            <small>* Hermit has no responsibility for the sites you wish to add. Anything that may be added that may be illegal in the country of use will be entirely at the risk of the user adding the site. Hermit does not condone the use of any such sites, and does not take any responsibility for the user wishing to do so. Hermit does also not provide any masking / privacy in terms of the sites visited, this will be equally accessible by network administrators etc as per a normal browser.</small>
-                        </section>
-                    </footer>
-                </article>
-            </div>
-        </main>
-    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
     <script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
