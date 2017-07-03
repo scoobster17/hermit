@@ -14,7 +14,6 @@ const template = [
 const buttonTemplate = [
     '<button ',
         'data-url="{{ url }}" ',
-        'data-classes="tab" ',
         'data-site="{{ site }}" ',
     '>',
         '{{ name }}',

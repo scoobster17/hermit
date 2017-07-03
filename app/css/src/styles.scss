@@ -1,7 +1,89 @@
 @charset "UTF-8";
 
-.something {
-    height:300px;
-}
+@import '../../../node_modules/reset-css/_reset';
 
-body { color: red; }
+$primaryBackgroundColour: #f04d02;
+
+.hermit-html {
+    font-size:62.5%;
+    font-family: arial, sans-serif;
+}
+.hermit-nav {
+    background-color: $primaryBackgroundColour;
+    overflow:hidden;
+    li {
+        float:left;
+    }
+    a {
+        background:#fff;
+        border: 0 solid #fff;
+        border-radius: 6px 6px 0 0;
+        color: inherit;
+        display:block;
+        font-size:1.6rem;
+        margin:2px 1px 0;
+        opacity: .8;
+        padding: 10px 20px 8px;
+        text-decoration: none;
+    }
+    [aria-selected="true"] {
+        opacity: 1;
+    }
+}
+.hermit-tab-container {
+    [aria-hidden="true"] {
+        display:none;
+    }
+}
+.hermit-tab {
+    padding: 20px;
+
+    h1 {
+        font-weight:bold;
+        font-size:2.4rem;
+        margin:0 auto 1rem;
+        max-width:80rem;
+    }
+    h2 {
+        font-size:2rem;
+        font-weight:bold;
+        margin:0 auto 1rem;
+        max-width:80rem;
+    }
+    h3 {
+        font-size:1.8rem;
+        font-weight:bold;
+        margin:0 auto 1rem;
+        max-width:80rem;
+    }
+    p {
+        font-size:1.6rem;
+        line-height:1.5;
+        margin: 0 auto 10px;
+        max-width:80rem;
+    }
+
+    section {
+        margin: 20px 0 40px;
+    }
+
+    form {
+        margin-left:auto;
+        margin-right:auto;
+        max-width:80rem;
+    }
+    .pre-configured-tabs {
+        margin-left:auto;
+        margin-right:auto;
+        max-width:80rem;
+    }
+    footer {
+        background-color: $primaryBackgroundColour;
+        color: #fff;
+        section {
+            margin-left:auto;
+            margin-right:auto;
+            max-width:80rem;
+        }
+    }
+}

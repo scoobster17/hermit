@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="hermit-html">
 <head>
     <meta charset="utf-8">
     <title>Hermit</title>
@@ -9,9 +9,9 @@
     <div>
         <header>
             <nav>
-                <ul>
+                <ul class="hermit-nav" role="tablist">
                     <li>
-                        <a href="#config">
+                        <a href="#hermit" id="tab-config" role="tab" aria-controls="hermit" aria-selected="true">
                             Hermit
                         </a>
                     </li>
@@ -19,14 +19,15 @@
             </nav>
         </header>
         <main>
-            <div id="tab-content-container">
-                <article>
+            <div id="tab-content-container" class="hermit-tab-container">
+                <article id="hermit" class="hermit-tab" role="tabpanel" aria-labelledby="tab-config">
                     <section>
                         <h1>Welcome to Hermit</h1>
-                        <p>This is the hermit app.</p>
+                        <p>This is the hermit app. In a great juxtaposition of the way the hermit crab picks many empty seashells to wrap around itself, this app is a 'shell' to all of your many web apps that you don't want clogging up your browser tabs.</p>
                     </section>
                     <section>
                         <h2>Add a new tab</h2>
+                        <p>Here you can specify any* site which will be added as a tab in your app.</p>
                         <form id="new-tab-form">
                             <fieldset>
                                 <h3>Tab details</h3>
@@ -47,14 +48,19 @@
                     </section>
                     <section>
                         <h2>Add a pre-configured tab</h2>
-                        <ul id="pre-configured-tabs"></ul>
+                        <p>We have a list of supported apps in the list below for you to quickly configure without having to look up the URL.</p>
+                        <!-- <p>We also welcome suggestions, <a>here you can contribute your own sites</a>.</p> -->
+                        <ul id="pre-configured-tabs" class="pre-configured-tabs"></ul>
                     </section>
+                    <footer>
+                        <section>
+                            &copy; Phil Gibbins
+                            * Hermit has no responsibility for the sites you wish to add. Anything that may be added that may be illegal in the country of use will be entirely at the risk of the user adding the site. Hermit does not condone the use of any such sites, and does not take any responsibility for the user wishing to do so. Hermit does also not provide any masking / privacy in terms of the sites visited, this will be equally accessible by network administrators etc as per a normal browser.
+                        </section>
+                    </footer>
                 </article>
             </div>
         </main>
-        <footer>
-            &copy; Phil Gibbins
-        </footer>
     </div>
     <script type="text/javascript" src="js/app.js"></script>
 </body>
