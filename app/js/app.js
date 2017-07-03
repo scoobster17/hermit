@@ -5,7 +5,6 @@
 const template = [
     '<webview ',
         'id="{{ windowId }}" ',
-        'class="{{ windowClasses }}" ',
         'src="{{ windowSrc }}" ',
     '>',
     '</webview>'
@@ -90,6 +89,7 @@ const getPreconfiguredTabs = () => {
         return res;
     })
     .then(res => {
+        var addNewSiteSection = document.getElementById('add-new-site');
         var buttons = preconfiguredTabs.getElementsByTagName('button');
         for (button of buttons) {
             button.addEventListener('click', function(event) {
@@ -99,10 +99,12 @@ const getPreconfiguredTabs = () => {
                         formInput.value = event.target.dataset[attr];
                     }
                 }
-                const formInput = document.getElementById('name');
-                if (formInput) {
-                    formInput.value = event.target.innerHTML;
-                }
+                // attempt at UX for now (TODO smooth scroll)
+                addNewSiteSection.scrollIntoView();
+            });
+            const buttonImg = button.querySelector('img');
+            if (buttonImg) button.addEventListener('click', (event) => {
+                event.target.parentElement.click();
             });
         }
     });

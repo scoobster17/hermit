@@ -25,7 +25,7 @@
                         <h1>Welcome to Hermit</h1>
                         <p>This is the hermit app. In a great juxtaposition of the way the hermit crab picks many empty seashells to wrap around itself, this app is a 'shell' to all of your many web apps that you don't want clogging up your browser tabs.</p>
                     </section>
-                    <section>
+                    <section id="add-new-site">
                         <h2>Add a new tab</h2>
                         <p>Here you can specify any* site which will be added as a tab in your app.</p>
                         <form id="new-tab-form">
@@ -34,17 +34,17 @@
                                 <div class="field">
                                     <label for="name"><span class="visually-hidden">Tab </span>Name</label>
                                     <p>This shows in the tab at the top of the screen. For example, look at this tab, next to the Hermit icon it says 'Hermit'. <strong>Required if a logo is not present.</strong></p>
-                                    <input type="text" name="name" id="name" placeholder="Twitter" />
+                                    <input type="text" name="name" id="name" placeholder="e.g. Twitter" />
                                 </div>
                                 <div class="field">
                                     <label for="site">Site</label>
                                     <p>This let&apos;s us know what service you are trying to access. This is to help the app set the site up correctly, such as to get an icon. <strong>This is required</strong>.</p>
-                                    <input type="text" name="site" id="site" placeholder="Twitter" required="true" />
+                                    <input type="text" name="site" id="site" placeholder="e.g. Twitter" required="true" />
                                 </div>
                                 <div class="field">
                                     <label for="url">URL</label>
                                     <p>Here please enter the site URL to be opened. You may be asked to log in if the service requires it. Hermit saves no login information. <strong>This is required.</strong></p>
-                                    <input type="text" name="url" id="url" placeholder="www.twitter.com" required="true" />
+                                    <input type="text" name="url" id="url" placeholder="e.g. https://www.twitter.com/" required="true" />
                                 </div>
                             </fieldset>
                             <fieldset>
