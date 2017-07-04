@@ -21,7 +21,7 @@ expressApp.get('/', function(req,res) {
 
 expressApp.get('/pre-configured-tabs', function(req,res) {
 
-    recursive(__dirname + '/../data/plugins', ['**/*.png', '**/*.svg'], function(err, files) {
+    recursive(__dirname + '/../data/plugins', ['**/*.png', '**/*.svg', '**/*.jpg', '**/.DS_Store'], function(err, files) {
         readMultipleFiles(files, 'utf-8', function(err, results) {
             if (err) throw err;
             var x = results.map(function(fileContents) {
