@@ -3,3 +3,6 @@ node_modules/
 
 # software
 *.sublime*
+
+# user settings
+data/user/

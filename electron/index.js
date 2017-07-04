@@ -11,7 +11,7 @@ function createBrowserWindow() {
 
     appWindow = new BrowserWindow({
         height: 600,
-        width: 800
+        width: 900
     });
 
     appWindow.loadURL('http://localhost:6378');

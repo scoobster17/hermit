@@ -137,11 +137,44 @@ const bindTabTriggers = () => {
     });
 };
 
+const serializeForm = (form) => {
+
+    const formDetails = {};
+    const formInputs = form.querySelectorAll('input[type="text"]');
+
+    formInputs.forEach((input) => {
+        formDetails[input.name] = input.value;
+    });
+
+    return formDetails;
+
+};
+
 const init = () => {
     getPreconfiguredTabs();
+    // getUserTabs();
+
     const newTabForm = document.getElementById('new-tab-form');
     newTabForm.addEventListener('submit', (event) => {
         event.preventDefault();
+
+        const tabDetails = serializeForm(event.target);
+
+        fetch('/user/settings/set', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(tabDetails)
+        })
+        .then(res => {
+            if (res.ok) return res;
+            throw new Error('There was an error');
+        })
+        .then(res => {
+            console.log(res);
+        });
+
         const existingTabPanels = tabContentContainer.querySelectorAll('.tab');
         existingTabPanels.forEach((tab) => {
             tab.setAttribute('aria-hidden', 'true');

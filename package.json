@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/scoobster17/hermit#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "electron": "^1.6.11",
     "express": "^4.15.3",
     "node-sass": "^4.5.3",
