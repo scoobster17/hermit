@@ -159,7 +159,7 @@ const getUserTabs = () => {
     .then(res => res.json())
     .then(res => {
         var tabs = JSON.parse(res.data);
-        tabs.forEach((tab) => {
+        if (tabs) tabs.forEach((tab) => {
             createTab(false);
             bindTabTriggers();
         });
