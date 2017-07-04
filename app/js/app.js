@@ -4,7 +4,7 @@
  */
 const template = [
     '<webview ',
-        'id="{{ id }}" ',
+        'id="{{ id }}-webview" ',
         'src="{{ url }}" ',
     '>',
     '</webview>'
@@ -68,7 +68,6 @@ const createButton = (config) => {
             }
 
         });
-
         return buttonContent;
 };
 
@@ -86,9 +85,6 @@ const getPreconfiguredTabs = () => {
         res.forEach((siteConfig) => {
             preconfiguredTabs.innerHTML += '<li>' + createButton(siteConfig) + '</li>';
         });
-        return res;
-    })
-    .then(res => {
         var addNewSiteSection = document.getElementById('add-new-site');
         var buttons = preconfiguredTabs.getElementsByTagName('button');
         for (button of buttons) {
@@ -160,21 +156,21 @@ const getUserTabs = () => {
     .then(res => {
         var tabs = JSON.parse(res.data);
         if (tabs) tabs.forEach((tab) => {
-            createTab(false);
+            createTab(tab, false);
             bindTabTriggers();
         });
     });
 };
 
-const createTab = (showTab = true) => {
-    tabContentContainer.innerHTML += `<div id="facebook" class="tab" ${ showTab ? '' : 'aria-hidden="true" ' }>` + createTabContent({
-        id: 'facebook',
-        url: 'https://www.facebook.com/'
+const createTab = (tabDetails, showTab = true) => {
+    tabContentContainer.innerHTML += `<div id="${ tabDetails.id }" class="tab" role="tabpanel" aria-labelledby="tab-${ tabDetails.name }" ${ showTab ? '' : 'aria-hidden="true" ' }>` + createTabContent({
+        id: tabDetails.id,
+        url: tabDetails.url
     }) + '</div>';
     tabList.innerHTML += [
         '<li>',
-            `<a href="#facebook" id="tab-config" role="tab" aria-controls="facebook" ${ showTab ? 'aria-selected="true" ' : '' }>`,
-                'Facebook',
+            `<a href="#${ tabDetails.id }" id="tab-${ tabDetails.name }" role="tab" aria-controls="${ tabDetails.id }" ${ showTab ? 'aria-selected="true" ' : '' }>`,
+                tabDetails.name,
             '</a>',
         '</li>'
     ].join('');
@@ -189,6 +185,7 @@ const init = () => {
         event.preventDefault();
 
         const tabDetails = serializeForm(event.target);
+        tabDetails.id = `hermit-${ new Date().getTime() }`;
 
         fetch('/user/settings/set', {
             method: 'POST',
@@ -215,10 +212,9 @@ const init = () => {
             tab.removeAttribute('aria-selected');
         });
 
-        createTab();
+        createTab(tabDetails);
         bindTabTriggers();
         return false;
     });
 }
-
-init();
+window.addEventListener('load', init);
