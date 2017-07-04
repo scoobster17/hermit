@@ -32,10 +32,24 @@ expressApp.get('/pre-configured-tabs', function(req,res) {
     })
 });
 
-expressApp.post('/user/settings/set', function(req, res) {
+const settingsPath = __dirname + '/../data/user/';
+const settingsFile = 'settings.json';
 
-    const settingsPath = __dirname + '/../data/user/';
-    const settingsFile = 'settings.json';
+expressApp.get('/user/settings/get', function(req, res) {
+    fs.readFile(settingsPath + settingsFile, 'utf-8', function(err, data) {
+        if (err) {
+            if (err.code === 'ENOENT' && err.errno === -2) {
+                res.status(200).send({ success: true, data: null });
+            } else {
+                throw err;
+            }
+        } else {
+            res.status(200).send({ success: true, data: data });
+        }
+    });
+});
+
+expressApp.post('/user/settings/set', function(req, res) {
 
     fs.readFile(settingsPath + settingsFile, 'utf-8', function(err, data) {
 

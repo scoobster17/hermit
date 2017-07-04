@@ -150,9 +150,39 @@ const serializeForm = (form) => {
 
 };
 
+const getUserTabs = () => {
+    fetch('/user/settings/get')
+    .then(res => {
+        if (res.ok) return res;
+        throw new Error('There was an error');
+    })
+    .then(res => res.json())
+    .then(res => {
+        var tabs = JSON.parse(res.data);
+        tabs.forEach((tab) => {
+            createTab(false);
+            bindTabTriggers();
+        });
+    });
+};
+
+const createTab = (showTab = true) => {
+    tabContentContainer.innerHTML += `<div id="facebook" class="tab" ${ showTab ? '' : 'aria-hidden="true" ' }>` + createTabContent({
+        id: 'facebook',
+        url: 'https://www.facebook.com/'
+    }) + '</div>';
+    tabList.innerHTML += [
+        '<li>',
+            `<a href="#facebook" id="tab-config" role="tab" aria-controls="facebook" ${ showTab ? 'aria-selected="true" ' : '' }>`,
+                'Facebook',
+            '</a>',
+        '</li>'
+    ].join('');
+};
+
 const init = () => {
     getPreconfiguredTabs();
-    // getUserTabs();
+    getUserTabs();
 
     const newTabForm = document.getElementById('new-tab-form');
     newTabForm.addEventListener('submit', (event) => {
@@ -185,17 +215,7 @@ const init = () => {
             tab.removeAttribute('aria-selected');
         });
 
-        tabContentContainer.innerHTML += '<div id="facebook" class="tab">' + createTabContent({
-            id: 'facebook',
-            url: 'https://www.facebook.com/'
-        }) + '</div>';
-        tabList.innerHTML += [
-            '<li>',
-                '<a href="#facebook" id="tab-config" role="tab" aria-controls="facebook" aria-selected="true">',
-                    'Facebook',
-                '</a>',
-            '</li>'
-        ].join('');
+        createTab();
         bindTabTriggers();
         return false;
     });
