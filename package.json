@@ -8,6 +8,7 @@
     "build:js": "node_modules/.bin/babel src/js -d app/js",
     "start": "node_modules/.bin/electron ./electron/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "parallelshell 'npm run watch:css' 'npm run watch:js'",
     "watch:css": "onchange 'src/css/**/*.scss' -- npm run build:css",
     "watch:js": "onchange 'src/js/**/*.js' -- npm run build:js"
   },
@@ -41,6 +42,7 @@
     "reset-css": "^2.2.0"
   },
   "devDependencies": {
-    "onchange": "^3.2.1"
+    "onchange": "^3.2.1",
+    "parallelshell": "^3.0.1"
   }
 }
