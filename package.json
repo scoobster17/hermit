@@ -31,6 +31,7 @@
   "homepage": "https://github.com/scoobster17/hermit#readme",
   "dependencies": {
     "babel-cli": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "babili": "^0.1.4",
     "body-parser": "^1.17.2",

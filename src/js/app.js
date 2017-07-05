@@ -1,77 +1,3 @@
-/**
- * Template for the webview component
- * @type {Array} Array of HTML strings bound together into one string
- */
-const template = [
-    '<webview ',
-        'id="{{ id }}-webview" ',
-        'src="{{ url }}" ',
-    '>',
-    '</webview>'
-].join('');
-
-const buttonTemplate = [
-    '<button ',
-        'data-name="{{ name }}" ',
-        'data-site="{{ site }}" ',
-        'data-url="{{ url }}" ',
-    '>',
-        '{{ name }}',
-        '<img src="img/service/{{ name | lowercase }}/{{ logo }}" alt="" />',
-    '</button>'
-].join('');
-
-/**
- * Create tab content from the data supplied, to append to the DOM
- * @param  {String} id      ID to assign to the tab
- * @param  {String} classes A list of classes to assign to the tab (can be 1)
- * @param  {String} src     Src of the tab
- * @return {String}         The returned HTML to be added to the DOM
- */
-const createTabContent = function (config) {
-
-    let i = 0;
-
-    const tabContent = template.replace(/\{\{ ?([a-zA-Z]+) ?\}\}/g, function() {
-        return '' + config[arguments[1]];
-    });
-
-    return tabContent;
-};
-
-const createButton = (config) => {
-
-        let i = 0;
-
-        const buttonContent = buttonTemplate.replace(/\{\{ ?([a-zA-Z]+)( ?\| ?([a-zA-Z]+))? ?\}\}/g, function(){
-
-            // get the filter and the key
-            const key = arguments[1];
-            const filter = arguments[3];
-
-            // if there is a filter, we need to process the key's value
-            if (filter !== undefined) {
-
-                switch (filter) {
-
-                    case 'lowercase':
-                        return '' + config[key].toLowerCase();
-                        break;
-
-                    default:
-                        return '' + config[key];
-
-                }
-
-            // otherwise return the corresponding config value
-            } else {
-                return '' + config[key];
-            }
-
-        });
-        return buttonContent;
-};
-
 const tabContentContainer = document.getElementById('tab-content-container');
 var preconfiguredTabs = document.getElementById('pre-configured-tabs');
 
@@ -83,9 +9,22 @@ const getPreconfiguredTabs = () => {
     })
     .then(res => res.json())
     .then(res => {
+        let html = '';
         res.forEach((siteConfig) => {
-            preconfiguredTabs.innerHTML += '<li>' + createButton(siteConfig) + '</li>';
+            html += [
+                '<li>',
+                    '<button ',
+                        `data-name="${ siteConfig.name }" `,
+                        `data-site="${ siteConfig.site }" `,
+                        `data-url="${ siteConfig.url }" `,
+                    '>',
+                        siteConfig.name,
+                        `<img src="img/service/${ siteConfig.name.toLowerCase() }/${ siteConfig.logo }" alt="" />`,
+                    '</button>',
+                '</li>'
+            ].join('');
         });
+        preconfiguredTabs.innerHTML = html;
         var addNewSiteSection = document.getElementById('add-new-site');
         var buttons = preconfiguredTabs.getElementsByTagName('button');
         for (let button of buttons) {
@@ -156,25 +95,57 @@ const getUserTabs = () => {
     .then(res => res.json())
     .then(res => {
         var tabs = JSON.parse(res.data);
-        if (tabs) tabs.forEach((tab) => {
-            createTab(tab, false);
+        if (tabs) {
+            tabs.forEach((tab) => {
+                tab.showTab = false;
+            });
+            createTabs(tabs);
             bindTabTriggers();
-        });
+        };
     });
 };
 
-const createTab = (tabDetails, showTab = true) => {
-    tabContentContainer.innerHTML += `<div id="${ tabDetails.id }" class="tab" role="tabpanel" aria-labelledby="tab-${ tabDetails.name }" ${ showTab ? '' : 'aria-hidden="true" ' }>` + createTabContent({
-        id: tabDetails.id,
-        url: tabDetails.url
-    }) + '</div>';
-    tabList.innerHTML += [
-        '<li>',
-            `<a href="#${ tabDetails.id }" id="tab-${ tabDetails.name }" role="tab" aria-controls="${ tabDetails.id }" ${ showTab ? 'aria-selected="true" ' : '' }>`,
-                tabDetails.name,
-            '</a>',
-        '</li>'
-    ].join('');
+const createTabs = (tabs) => {
+    let tabsHTML = '';
+    let tabsContentHTML = '';
+
+    tabs.forEach((tab) => {
+
+        tabsHTML += [
+            '<li>',
+                '<a ',
+                    `href="#${ tab.id }" `,
+                    `id="tab-${ tab.name }" `,
+                    'role="tab" ',
+                    `aria-controls="${ tab.id }" `,
+                    `${ tab.showTab ? 'aria-selected="true" ' : '' }`,
+                '>',
+                    tab.name,
+                '</a>',
+            '</li>'
+        ].join('');
+
+        tabsContentHTML += [
+            '<div ',
+                `id="${ tab.id }" `,
+                'class="tab" ',
+                'role="tabpanel" ',
+                `aria-labelledby="tab-${ tab.name }" `,
+                `${ tab.showTab ? '' : 'aria-hidden="true" ' }`,
+            '>',
+                '<webview ',
+                    `id="${ tab.id }-webview" `,
+                    `src="${ tab.url }" `,
+                '>',
+                '</webview>',
+            '</div>'
+        ].join('');
+
+    });
+
+    tabList.innerHTML += tabsHTML;
+    tabContentContainer.innerHTML += tabsContentHTML;
+
 };
 
 const init = () => {
@@ -213,7 +184,7 @@ const init = () => {
             tab.removeAttribute('aria-selected');
         });
 
-        createTab(tabDetails);
+        createTabs([{ ...tabDetails, showTab: true }]);
         bindTabTriggers();
         return false;
     });
