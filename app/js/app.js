@@ -12,8 +12,9 @@ const template = [
 
 const buttonTemplate = [
     '<button ',
-        'data-url="{{ url }}" ',
+        'data-name="{{ name }}" ',
         'data-site="{{ site }}" ',
+        'data-url="{{ url }}" ',
     '>',
         '{{ name }}',
         '<img src="img/service/{{ name | lowercase }}/{{ logo }}" alt="" />',
