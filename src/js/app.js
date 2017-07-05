@@ -1,4 +1,5 @@
 const tabContentContainer = document.getElementById('tab-content-container');
+const dynamicTabsContentContainer = document.getElementById('dynamic-tabs-content-container');
 var preconfiguredTabs = document.getElementById('pre-configured-tabs');
 
 const getPreconfiguredTabs = () => {
@@ -144,7 +145,7 @@ const createTabs = (tabs) => {
     });
 
     tabList.innerHTML += tabsHTML;
-    tabContentContainer.innerHTML += tabsContentHTML;
+    dynamicTabsContentContainer.innerHTML += tabsContentHTML;
 
 };
 
