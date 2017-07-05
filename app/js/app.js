@@ -1,5 +1,5 @@
 /**
- * Teamplate for the webview component
+ * Template for the webview component
  * @type {Array} Array of HTML strings bound together into one string
  */
 const template = [

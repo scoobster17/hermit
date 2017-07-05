@@ -14,7 +14,7 @@ const path = require("path");
  */
 
 module.exports = {
-    setupIntercepts : (app) => {
+    setupIntercepts: (app) => {
 
         /**
          * Intercept image requests as each plugin's image is located separately in it's
