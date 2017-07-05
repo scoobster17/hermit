@@ -5,9 +5,11 @@
   "main": "electron/index.js",
   "scripts": {
     "build:css": "node-sass --output-style compressed -o app/css src/css",
+    "build:js": "node_modules/.bin/babel src/js -d app/js",
     "start": "node_modules/.bin/electron ./electron/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch:css": "onchange 'src/css/**/*.scss' -- npm run build:css"
+    "watch:css": "onchange 'src/css/**/*.scss' -- npm run build:css",
+    "watch:js": "onchange 'src/js/**/*.js' -- npm run build:js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,9 @@
   },
   "homepage": "https://github.com/scoobster17/hermit#readme",
   "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babili": "^0.1.4",
     "body-parser": "^1.17.2",
     "electron": "^1.6.11",
     "express": "^4.15.3",
