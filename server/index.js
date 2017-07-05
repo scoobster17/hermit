@@ -1,89 +1,162 @@
-// dependencies
-var fs = require("fs");
-var path = require("path");
-var express = require("express");
-var bodyParser = require('body-parser');
-var recursive = require('recursive-readdir');
-var readMultipleFiles = require('read-multiple-files');
+/******************************************************************************/
 
-// set up express app
-var expressApp = express();
+/**
+ * Server configuration file for Hermit Shell Browser tabs app
+ * @author Phil Gibbins (@Scoobster17)
+ */
 
-// set up express
-expressApp.use(express.static(__dirname + '/../app'));
-expressApp.use( bodyParser.urlencoded({ extended: false }) );
+/******************************************************************************/
+
+/**
+ * DEPENDENCIES
+ */
+
+// utilities
+const fs = require("fs");
+const path = require("path");
+const recursive = require('recursive-readdir');
+const readMultipleFiles = require('read-multiple-files');
+
+// framework
+const express = require("express");
+const bodyParser = require('body-parser');
+
+/******************************************************************************/
+
+/**
+ * SETUP
+ * Setting up and configuring Express App
+ */
+const expressApp = express();
+expressApp.use( express.static(__dirname + '/../app'));
+expressApp.use( bodyParser.urlencoded({ extended: false }));
 expressApp.use( bodyParser.json() );
+expressApp.listen(6378);
 
-// routing
-expressApp.get('/', function(req,res) {
-  res.sendFile(path.join(__dirname+'/../app/index.html'));
-});
+/******************************************************************************/
 
-expressApp.get('/pre-configured-tabs', function(req,res) {
+/**
+ * VARIABLES
+ */
+const pluginsDirectory = __dirname + '/../data/plugins';
+const settingsPath = __dirname + '/../data/user/';
+const settingsFile = 'settings.json';
+const isErrorFileOrDirMissing = err => err.code === 'ENOENT' && err.errno === -2;
 
-    recursive(__dirname + '/../data/plugins', ['**/*.png', '**/*.svg', '**/*.jpg', '**/.DS_Store'], function(err, files) {
-        readMultipleFiles(files, 'utf-8', function(err, results) {
+/******************************************************************************/
+
+/**
+ * ROUTING
+ */
+
+/**
+ * Get the configurations for all supported plugins and concatenate them into
+ * one array which then then be rendered on the front end to pre-fill the new
+ * tab form
+ * @return {Object} [Object containing JSON array configuration file contents]
+ */
+expressApp.get('/pre-configured-tabs', (req, res) => {
+
+    // recursively search the plugins folder for all config.json files. Images
+    // and mac dot files are ignored as these cannot be parsed (2nd param).
+    // Results are gathered into an array of file names with their paths.
+    recursive(
+        pluginsDirectory,
+        [
+            '**/*.png',
+            '**/*.svg',
+            '**/*.jpg',
+            '**/.DS_Store'
+        ],
+        (err, files) => {
             if (err) throw err;
-            var x = results.map(function(fileContents) {
-                return JSON.parse(fileContents);
-            });
-            res.status(200).send(x);
-        });
+
+            // read each file returned by the search and collect them all into
+            // an array of configuration objects
+            readMultipleFiles(files, 'utf-8', (err, results) => {
+                if (err) throw err;
+                res.status(200).send(
+                    results.map(fileContents => JSON.parse(fileContents))
+                );
+            }
+        );
     })
 });
 
-const settingsPath = __dirname + '/../data/user/';
-const settingsFile = 'settings.json';
-
-expressApp.get('/user/settings/get', function(req, res) {
-    fs.readFile(settingsPath + settingsFile, 'utf-8', function(err, data) {
+/**
+ * Get the user's local settings from a local configuration file. This file
+ * stores the configurations that have been set up on the device where the app
+ * is running.
+ * @return {Object} Object containing JSON Array of local site configurations
+ */
+expressApp.get('/user/settings/get', (req, res) => {
+    fs.readFile(settingsPath + settingsFile, 'utf-8', (err, data) => {
         if (err) {
-            if (err.code === 'ENOENT' && err.errno === -2) {
+
+            // if the directory where the user's configuration is stored does
+            // not exist, or the directory does and the file itself does not,
+            // return a success state as there is simply no configuration to
+            // return, otherwise, throw an error as normal
+            if (isErrorFileOrDirMissing(err)) {
                 res.status(200).send({ success: true, data: null });
             } else {
                 throw err;
             }
         } else {
-            res.status(200).send({ success: true, data: data });
+            res.status(200).send({ success: true, data });
         }
     });
 });
 
-expressApp.post('/user/settings/set', function(req, res) {
-
-    fs.readFile(settingsPath + settingsFile, 'utf-8', function(err, data) {
-
+/**
+ * Store a site configuration by adding to the local user configuration file
+ * @return {Object} Object containing success state
+ */
+expressApp.post('/user/settings/set', (req, res) => {
+    fs.readFile(settingsPath + settingsFile, 'utf-8', (err, data) => {
         if (err) {
-            if (err.code === 'ENOENT' && err.errno === -2) {
+
+            // if the directory where the user's configuration is stored does
+            // not exist, or the directory does and the file itself does not
+            if (isErrorFileOrDirMissing(err)) {
+
+                // check if the directory exists, and if not, create it
                 if (!fs.existsSync(settingsPath)) fs.mkdirSync(settingsPath);
-                fs.writeFile(settingsPath + settingsFile, JSON.stringify([req.body]), function(writeErr) {
-                    if (writeErr) throw writeErr;
-                    res.status(500).send({success: false}); // 500?
-                });
+
+                // create the configuration file and write the contents of the
+                // configuration passed
+                fs.writeFile(
+                    settingsPath + settingsFile,
+                    JSON.stringify([req.body]),
+                    (writeErr) => {
+                        if (writeErr) throw writeErr;
+                        res.status(500).send({ success: false }); // 500?
+                    }
+                );
             } else {
-                throw err;
-                res.status(500).send({success: false}); // 500?
+                res.status(500).send({ success: false }); // 500?
             }
 
+        // if the configuration file already exists, add the configuration
+        // passed to the array of configurations in the file already
         } else {
-
-            var newSettings = JSON.parse(data);
+            const newSettings = JSON.parse(data);
             newSettings.push(req.body);
-
-            fs.writeFile(settingsPath + settingsFile, JSON.stringify(newSettings), function(err) {
-                if (err) throw err;
-            });
-
-            res.status(200).send({success: true});
-
+            fs.writeFile(
+                settingsPath + settingsFile,
+                JSON.stringify(newSettings),
+                (err) => { if (err) throw err; }
+            );
+            res.status(200).send({ success: true });
         }
     });
 });
 
-expressApp.get('/img/service/*', function(req, res) {
-    var file = req.url.replace('/img/service', __dirname + '/../data/plugins');
-    res.status(200).sendFile(path.resolve(file));
+/**
+ * Intercept image requests as each plugin's image is located separately in it's
+ * corresponding plugin file. Serve the file from the required folder.
+ */
+expressApp.get('/img/service/*', (req, res) => {
+    const file = req.url.replace('/img/service', pluginsDirectory);
+    res.status(200).sendFile( path.resolve(file) );
 });
-
-// set up app to listen on port
-expressApp.listen(6378);
