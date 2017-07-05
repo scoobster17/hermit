@@ -1,0 +1,23 @@
+.hermit-nav {
+    background-color: $primaryBackgroundColour;
+    overflow:hidden;
+    padding:0 2px;
+    li {
+        float:left;
+    }
+    a {
+        background:#fff;
+        border: 0 solid #fff;
+        border-radius: 6px 6px 0 0;
+        color: inherit;
+        display:block;
+        font-size:$primaryFontSize;
+        margin:3px 2px 0 1px;
+        opacity: .8;
+        padding: 10px 20px 8px;
+        text-decoration: none;
+    }
+    [aria-selected="true"] {
+        opacity: 1;
+    }
+}

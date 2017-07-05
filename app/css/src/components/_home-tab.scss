@@ -1,0 +1,150 @@
+.hermit-tab {
+    h1 {
+        font-weight:bold;
+        font-size:2.4rem;
+        margin:40px auto 1rem;
+        max-width:80rem;
+    }
+    h2 {
+        font-size:2rem;
+        font-weight:bold;
+        margin:0 auto 1rem;
+        max-width:80rem;
+    }
+    h3 {
+        font-size:1.8rem;
+        font-weight:bold;
+        margin:0 auto 1rem;
+        max-width:80rem;
+    }
+    p {
+        font-size:$primaryFontSize;
+        line-height:1.5;
+        margin: 0 auto 10px;
+        max-width:80rem;
+    }
+    strong {
+        font-weight: bold;
+    }
+
+    section {
+        margin: 20px 0 40px;
+    }
+
+    form {
+        margin-left:auto;
+        margin-right:auto;
+        max-width:80rem;
+    }
+    fieldset {
+        margin: 0 0 20px;
+    }
+    .field {
+        overflow:hidden;
+        padding:2rem;
+        + .field {
+            border-top: 1px solid $primaryColour;
+        }
+    }
+    .checkboxField {
+        padding-left:40px;
+        position: relative;
+        input[type="checkbox"] {
+            left:0;
+            position: absolute;
+            top:21px;
+        }
+    }
+    label {
+        font-size: $primaryFontSize;
+        font-weight:bold;
+        line-height:1.5;
+        margin: 0 0 1rem;
+    }
+    input {
+        font-size: $primaryFontSize;
+    }
+    .main-details {
+        label {
+            float:left;
+            margin-top: 0.5rem;
+            width:45%;
+            + p {
+                float:right;
+                margin:0;
+                width:50%;
+            }
+        }
+        input {
+            float:left;
+            width:45%;
+        }
+    }
+
+    button {
+        cursor: pointer;
+    }
+    .button {
+        cursor: pointer;
+        background-color: $primaryBackgroundColour;
+        border:0 solid transparent;
+        border-radius: 4px;
+        color:#fff;
+        font-size: $primaryFontSize;
+        padding: 20px 80px;
+    }
+
+    .actions {
+        text-align: center;
+    }
+
+    .pre-configured-tabs {
+        background-color: $primaryBackgroundColour;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        box-shadow: inset 3px 3px 3px rgba(0, 0, 0, .2);
+        margin-left:auto;
+        margin-right:auto;
+        max-width:80rem;
+        overflow: hidden;
+        li {
+            float:left;
+            margin: 1rem 1%;
+            width: 22%;
+        }
+        button {
+            background: #fff;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+            box-sizing: border-box;
+            display:block;
+            font-size: $primaryFontSize;
+            padding: 84px 10px 10px;
+            position:relative;
+            width:100%;
+            &[data-site="YouTube"] {
+                img {
+                    top: 23px;
+                }
+            }
+        }
+        img {
+            left: 50%;
+            margin-left:-30px;
+            max-height:60px;
+            position: absolute;
+            top:14px;
+            width:60px;
+        }
+    }
+    footer {
+        background-color: $primaryBackgroundColour;
+        color: #fff;
+        padding: 40px 0;
+        section {
+            margin:0 auto;
+            max-width:80rem;
+        }
+    }
+}
