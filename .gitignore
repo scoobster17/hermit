@@ -6,3 +6,7 @@ node_modules/
 
 # user settings
 data/user/
+
+# generated files
+*.tmp-browserify-*
+*.log
