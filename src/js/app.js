@@ -37,6 +37,9 @@ const tabContentContainer = document.getElementById('tab-content-container');
 // dynamic tabs container
 const dynamicTabsContentContainer = document.getElementById('dynamic-tabs-content-container');
 
+// form used to add a new tab
+const newTabForm = document.getElementById('new-tab-form');
+
 /******************************************************************************/
 
 /**
@@ -188,10 +191,18 @@ const getUserTabs = () => {
     .catch(console.error);
 };
 
+/**
+ * Create tab(s) and add them to the DOM
+ * @param  {Array} tabs     Array of objects containing configuration for each
+ *                          tab and it's content
+ */
 const createTabs = (tabs) => {
+
     let tabsHTML = '';
     let tabsContentHTML = '';
 
+    // loop through the tabs and create both a tab for the nav and it's
+    // respective content, appending each of these to the relevant html string
     tabs.forEach((tab) => {
 
         tabsHTML += [
@@ -226,50 +237,95 @@ const createTabs = (tabs) => {
 
     });
 
+    // bind each of the HTML strings to the DOM
     tabList.innerHTML += tabsHTML;
     dynamicTabsContentContainer.innerHTML += tabsContentHTML;
 
 };
 
-const init = () => {
-    getPreconfiguredTabs();
-    getUserTabs();
-
-    const newTabForm = document.getElementById('new-tab-form');
+/**
+ * Handle the add new tab form submission to add a new tab rather than navigate
+ * to a new page or send a request to the server by default
+ */
+const bindAddTabFormSubmit = () => {
     newTabForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
+        // get the details that have been entered in the form, the existing tabs
+        // and their content
         const tabDetails = serializeForm(event.target);
+        const existingTabs = tabList.querySelectorAll('a');
+        const existingTabContentPanels = tabContentContainer.querySelectorAll('.tab');
+
+        // add a unique ID to the tab for use in the DOM (so each tab is linked
+        // with it's content). getTime() returns a millisecond string on
+        // execution, and time is forever moving forward so will suffice for now
         tabDetails.id = `hermit-${ new Date().getTime() }`;
 
-        fetch('/user/settings/set', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(tabDetails)
-        })
-        .then(res => {
-            if (res.ok) return res;
-            throw new Error('There was an error');
-        })
-        .then(res => {
-            console.log(res);
-        });
+        // TODO: form validation
 
-        const existingTabPanels = tabContentContainer.querySelectorAll('.tab');
-        existingTabPanels.forEach((tab) => {
-            tab.setAttribute('aria-hidden', 'true');
-        });
-        const tabs = tabList.querySelectorAll('a');
-
-        tabs.forEach((tab) => {
+        // remove selected state from tabs
+        existingTabs.forEach((tab) => {
             tab.removeAttribute('aria-selected');
         });
 
+        // hide all existing tabs' content
+        existingTabContentPanels.forEach((tab) => {
+            tab.setAttribute('aria-hidden', 'true');
+        });
+
+        // create the new tab, having set it to show by default
         createTabs([{ ...tabDetails, showTab: true }]);
+
+        // add tab functionality to all tabs (specifically the new tab)
         bindTabTriggers();
+
+        // save the configuration to the user's settings file stored locally
+        updateUserSettings(tabDetails);
+
         return false;
     });
 }
+
+/**
+ * Save a configuration to the user's local configuration file stored on the
+ * device where the app is installed
+ * @param  {Object} tabDetails Configuration object to be stored as-is
+ */
+const updateUserSettings = (tabDetails) => {
+    fetch('/user/settings/set', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(tabDetails)
+    })
+    .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('There was an error updating user settings');
+    })
+    // not a problem if not saved, we simply want to to log the error at this
+    // stage. Tab is still added to the DOM, it's just when the app is quit and
+    // re-opened it will not re-appear. This will be frustrating and need fixing
+    // TODO: let the user know there was an error
+    .catch(console.error);
+}
+
+/**
+ * Initialisation function to set up the app when electron opens a browser
+ * window and loads the Hermit web app.
+ */
+const init = () => {
+
+    // fetch any configurations that can be done by the hermit app
+    getPreconfiguredTabs();
+
+    // fetch any configurations already set up by the user on the device
+    getUserTabs();
+
+    // bind submit event to add a new tab configuration
+    bindAddTabFormSubmit();
+}
+
+// call the initialisation function when the page has loaded
 window.addEventListener('load', init);
