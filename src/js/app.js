@@ -114,48 +114,78 @@ const addPreconfiguredSiteButtons = (siteConfigs) => {
     }
 };
 
+/**
+ * Add click events to tabs to hide all other tabs and show the content of the
+ * selected tab
+ */
 const bindTabTriggers = () => {
 
+    // get the tabs and their content at the time of event binding to catch any
+    // new tabs that may have been added to the DOM
     const tabs = tabList.querySelectorAll('a');
-    const tabPanels = tabContentContainer.querySelectorAll('.tab');
+    const tabContentPanels = tabContentContainer.querySelectorAll('.tab');
 
+    // loop through the tabs adding a click event to hide all other tabs'
+    // content and show the tab content related to the tab being clicked
     tabs.forEach((tab) => {
         tab.addEventListener('click', (event) => {
             event.preventDefault();
 
-            tabs.forEach((tabChangingStateOf) => {
-                tabChangingStateOf.removeAttribute('aria-selected');
-            });
-            event.target.setAttribute('aria-selected', 'true');
-
+            // get the tab content that relates to the tab being clicked
             const targetTab = document.getElementById(
                 event.target.getAttribute('href').slice(1)
             );
-            tabPanels.forEach((tabPanel) => {
+
+            // remove state from selected tab(s)
+            tabs.forEach((tabChangingStateOf) => {
+                tabChangingStateOf.removeAttribute('aria-selected');
+            });
+
+            // add state to newly selected tab
+            event.target.setAttribute('aria-selected', 'true');
+
+            // hide all other tabs' content
+            tabContentPanels.forEach((tabPanel) => {
                 tabPanel.setAttribute('aria-hidden', 'true');
             });
+
+            // show the relevant tab content
             targetTab.removeAttribute('aria-hidden');
         });
     });
 };
 
+/**
+ * Get any configurations that the user has set up previously from a locally
+ * stored file
+ */
 const getUserTabs = () => {
     fetch('/user/settings/get')
     .then(res => {
-        if (res.ok) return res;
-        throw new Error('There was an error');
+        if (res.ok) return res.json();
+        throw new Error('There was an error fetching the user\'s settings');
     })
-    .then(res => res.json())
     .then(res => {
         var tabs = JSON.parse(res.data);
         if (tabs) {
+
+            // on load, the hermit tab should be shown, so all other tabs should
+            // have a showTab value of false. Looping through and adding here
             tabs.forEach((tab) => {
                 tab.showTab = false;
             });
+
+            // create the tabs in the DOM
             createTabs(tabs);
+
+            // add click events to the new tabs so they work!
             bindTabTriggers();
         };
-    });
+    })
+    // not a problem if none fetched, we simply want to to log the error at this
+    // stage. Nothing is added to the DOM, and nothing needs to be hidden.
+    // TODO: let the user know there was an error
+    .catch(console.error);
 };
 
 const createTabs = (tabs) => {
