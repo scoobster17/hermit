@@ -1,6 +1,44 @@
+/******************************************************************************/
+
+/**
+ * Hermit Shell Browser tabs app Javascript file
+ * @author Phil Gibbins (@Scoobster17)
+ */
+
+'use strict';
+
+/******************************************************************************/
+
+/**
+ * DEPENDENCIES
+ */
+
+// utilities
+import { serializeForm } from './utils/formHandling';
+
+/******************************************************************************/
+
+/**
+ * BINDING ELEMENTS
+ */
+
+// list of configurations on teh hermit tab
+const preconfiguredTabs = document.getElementById('pre-configured-tabs');
+
+// tabs
+const tabList = document.getElementById('hermit-nav');
+
+// ultimate tab container
 const tabContentContainer = document.getElementById('tab-content-container');
+
+// dynamic tabs container
 const dynamicTabsContentContainer = document.getElementById('dynamic-tabs-content-container');
-var preconfiguredTabs = document.getElementById('pre-configured-tabs');
+
+/******************************************************************************/
+
+/**
+ * BINDING ELEMENTS
+ */
 
 const getPreconfiguredTabs = () => {
     fetch('/pre-configured-tabs')
@@ -47,8 +85,6 @@ const getPreconfiguredTabs = () => {
     });
 };
 
-const tabList = document.getElementById('hermit-nav');
-
 const bindTabTriggers = () => {
 
     const tabs = tabList.querySelectorAll('a');
@@ -72,19 +108,6 @@ const bindTabTriggers = () => {
             targetTab.removeAttribute('aria-hidden');
         });
     });
-};
-
-const serializeForm = (form) => {
-
-    const formDetails = {};
-    const formInputs = form.querySelectorAll('input[type="text"]');
-
-    formInputs.forEach((input) => {
-        formDetails[input.name] = input.value;
-    });
-
-    return formDetails;
-
 };
 
 const getUserTabs = () => {

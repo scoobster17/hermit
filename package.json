@@ -5,7 +5,7 @@
   "main": "electron/index.js",
   "scripts": {
     "build:css": "node-sass --output-style compressed -o app/css src/css",
-    "build:js": "node_modules/.bin/babel src/js -d app/js",
+    "build:js": "node_modules/.bin/browserify src/js/app.js -o app/js/bundle.js -t babelify",
     "start": "node_modules/.bin/electron ./electron/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "parallelshell 'npm run watch:css' 'npm run watch:js'",
@@ -30,11 +30,12 @@
   },
   "homepage": "https://github.com/scoobster17/hermit#readme",
   "dependencies": {
-    "babel-cli": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "babelify": "^7.3.0",
     "babili": "^0.1.4",
     "body-parser": "^1.17.2",
+    "browserify": "^14.4.0",
     "electron": "^1.6.11",
     "express": "^4.15.3",
     "node-sass": "^4.5.3",
