@@ -44,6 +44,7 @@ export const createTabs = (tabs, DOMElements) => {
                 '<webview ',
                     `id="${ tab.id }-webview" `,
                     `src="${ tab.url }" `,
+                    `partition="persist:${ tab.name }"`,
                 '>',
                 '</webview>',
             '</div>'
@@ -54,6 +55,16 @@ export const createTabs = (tabs, DOMElements) => {
     // bind each of the HTML strings to the DOM
     elems.tabList.innerHTML += tabsHTML;
     elems.dynamicTabsContentContainer.innerHTML += tabsContentHTML;
+
+    /*
+    var x = document.querySelectorAll('webview')[1];
+    x.addEventListener("did-get-redirect-request", function (e) {
+        setTimeout(function() {
+            x.executeJavaScript(`window.location = '${e.newURL}';`);
+        }, 10);
+        e.preventDefault();
+    });
+    */
 
 };
 

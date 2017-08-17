@@ -38,6 +38,11 @@ var _tabHandling = require('./tabs/tab-handling');
  * MAIN FUNCTIONALITY
  */
 
+/**
+ * Get DOM elements and cache them in an object for easy reference and to negate
+ * the need to interrogate the DOM unnecessarily
+ * @return {Object} Object where keys are bound to DOM elements
+ */
 var getDOMElements = function getDOMElements() {
     return {
 
@@ -329,12 +334,22 @@ var createTabs = exports.createTabs = function createTabs(tabs, DOMElements) {
 
         tabsHTML += ['<li>', '<a ', 'href="#' + tab.id + '" ', 'id="tab-' + tab.name + '" ', 'role="tab" ', 'aria-controls="' + tab.id + '" ', '' + (tab.showTab ? 'aria-selected="true" ' : ''), '>', tab.name, '</a>', '</li>'].join('');
 
-        tabsContentHTML += ['<div ', 'id="' + tab.id + '" ', 'class="tab" ', 'role="tabpanel" ', 'aria-labelledby="tab-' + tab.name + '" ', '' + (tab.showTab ? '' : 'aria-hidden="true" '), '>', '<webview ', 'id="' + tab.id + '-webview" ', 'src="' + tab.url + '" ', '>', '</webview>', '</div>'].join('');
+        tabsContentHTML += ['<div ', 'id="' + tab.id + '" ', 'class="tab" ', 'role="tabpanel" ', 'aria-labelledby="tab-' + tab.name + '" ', '' + (tab.showTab ? '' : 'aria-hidden="true" '), '>', '<webview ', 'id="' + tab.id + '-webview" ', 'src="' + tab.url + '" ', 'partition="persist:' + tab.name + '"', '>', '</webview>', '</div>'].join('');
     });
 
     // bind each of the HTML strings to the DOM
     elems.tabList.innerHTML += tabsHTML;
     elems.dynamicTabsContentContainer.innerHTML += tabsContentHTML;
+
+    /*
+    var x = document.querySelectorAll('webview')[1];
+    x.addEventListener("did-get-redirect-request", function (e) {
+        setTimeout(function() {
+            x.executeJavaScript(`window.location = '${e.newURL}';`);
+        }, 10);
+        e.preventDefault();
+    });
+    */
 };
 
 /**
