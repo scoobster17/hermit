@@ -1,5 +1,5 @@
 // module-scope variable to hold DOM elements
-let elems;
+let elems = {};
 
 /**
  * Create tab(s) and add them to the DOM

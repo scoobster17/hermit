@@ -1,5 +1,5 @@
 // module-scope variable to hold DOM elements
-let elems;
+let elems = {};
 
 /**
  * Get all configurations for supported sites from the local plugins folder

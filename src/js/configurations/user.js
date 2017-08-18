@@ -2,7 +2,7 @@
 import { createTabs, bindTabTriggers } from '../tabs/tab-handling';
 
 // module-scope variable to hold DOM elements
-let elems;
+let elems = {};
 
 /**
  * Get any configurations that the user has set up previously from a locally
