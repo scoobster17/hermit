@@ -343,9 +343,8 @@ var createTabs = exports.createTabs = function createTabs(tabs, DOMElements) {
 
     var x = document.querySelectorAll('webview')[1];
     x.addEventListener("did-get-redirect-request", function (e) {
-        console.log(e);
         setTimeout(function () {
-            x.executeJavaScript('window.onbeforeunload = function(event){console.log(event);return \'Are you sure you want to leave?\';};window.location = \'' + e.newURL + '\';');
+            x.executeJavaScript(['window.onbeforeunload = function(event){', 'console.log(event);', 'return \'Are you sure you want to leave?\';', '};', 'window.location = \'' + e.newURL + '\';'].join(''));
         }, 10);
         e.preventDefault();
     });

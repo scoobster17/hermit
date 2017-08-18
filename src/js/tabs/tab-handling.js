@@ -66,7 +66,7 @@ export const createTabs = (tabs, DOMElements) => {
                         'return \'Are you sure you want to leave?\';',
                     '};',
                     `window.location = '${e.newURL}';`
-                ].join('');
+                ].join('')
             );
         }, 10);
         e.preventDefault();
