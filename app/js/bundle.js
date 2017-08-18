@@ -341,15 +341,14 @@ var createTabs = exports.createTabs = function createTabs(tabs, DOMElements) {
     elems.tabList.innerHTML += tabsHTML;
     elems.dynamicTabsContentContainer.innerHTML += tabsContentHTML;
 
-    /*
     var x = document.querySelectorAll('webview')[1];
     x.addEventListener("did-get-redirect-request", function (e) {
-        setTimeout(function() {
-            x.executeJavaScript(`window.location = '${e.newURL}';`);
+        console.log(e);
+        setTimeout(function () {
+            x.executeJavaScript('window.onbeforeunload = function(event){console.log(event);return \'Are you sure you want to leave?\';};window.location = \'' + e.newURL + '\';');
         }, 10);
         e.preventDefault();
     });
-    */
 };
 
 /**
